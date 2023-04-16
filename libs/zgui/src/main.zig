@@ -9,6 +9,7 @@ pub const version = @import("std").SemanticVersion{ .major = 0, .minor = 9, .pat
 pub usingnamespace @import("gui.zig");
 pub const plot = @import("plot.zig");
 pub const backend = switch (@import("zgui_options").backend) {
+    .glfw_opengl3 => @import("backend_glfw_opengl3.zig"),
     .glfw_wgpu => @import("backend_glfw_wgpu.zig"),
     .win32_dx12 => .{}, // TODO:
     .no_backend => .{},
