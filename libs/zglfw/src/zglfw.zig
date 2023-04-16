@@ -54,6 +54,15 @@ extern fn glfwGetTime() f64;
 pub const setTime = glfwSetTime;
 extern fn glfwSetTime(time: f64) void;
 
+/// `pub fn windowHint(hint: i32, value: i32) void`
+pub const windowHint = glfwWindowHint;
+extern fn glfwWindowHint(hint: i32, value: i32) void;
+
+pub fn getProcAddress(proc: [:0]const u8) ?*const anyopaque {
+    return glfwGetProcAddress(proc.ptr);
+}
+extern fn glfwGetProcAddress(proc: [*:0]const u8) ?*const anyopaque;
+
 pub const Error = error{
     NotInitialized,
     NoCurrentContext,
@@ -648,6 +657,14 @@ pub const Window = opaque {
     }
     extern fn glfwSetInputMode(window: *Window, mode: InputMode, value: i32) void;
 
+    /// `pub fn makeContextCurrent() void`
+    pub const makeContextCurrent = glfwMakeContextCurrent;
+    extern fn glfwMakeContextCurrent(window: *Window) void;
+
+    /// `pub fn swapBuffers() void`
+    pub const swapBuffers = glfwSwapBuffers;
+    extern fn glfwSwapBuffers(window: *Window) void;
+
     pub fn create(
         width: i32,
         height: i32,
@@ -851,7 +868,11 @@ test "zglfw.basic" {
     const content_scale = window.getContentScale();
     _ = content_scale[0];
     _ = content_scale[1];
+
     pollEvents();
+
+    window.swapBuffers();
+
     try maybeError();
 }
 //--------------------------------------------------------------------------------------------------
