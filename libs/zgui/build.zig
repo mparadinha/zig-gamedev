@@ -2,6 +2,7 @@ const std = @import("std");
 
 pub const Backend = enum {
     no_backend,
+    glfw_opengl3,
     glfw_wgpu,
     win32_dx12,
 };
@@ -86,6 +87,11 @@ pub fn package(
     zgui_c_cpp.addCSourceFile(thisDir() ++ "/libs/imgui/implot_items.cpp", cflags);
 
     switch (args.options.backend) {
+        .glfw_opengl3 => {
+            zgui_c_cpp.addIncludePath(thisDir() ++ "/../zglfw/libs/glfw/include");
+            zgui_c_cpp.addCSourceFile(thisDir() ++ "/libs/imgui/backends/imgui_impl_glfw.cpp", cflags);
+            zgui_c_cpp.addCSourceFile(thisDir() ++ "/libs/imgui/backends/imgui_impl_opengl3.cpp", cflags);
+        },
         .glfw_wgpu => {
             zgui_c_cpp.addIncludePath(thisDir() ++ "/../zglfw/libs/glfw/include");
             zgui_c_cpp.addIncludePath(thisDir() ++ "/../zgpu/libs/dawn/include");
